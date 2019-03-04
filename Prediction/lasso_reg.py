@@ -65,15 +65,31 @@ for k in (range(2,8)):
 filename = 'lasso_reg_kfold.sav'
 pickle.dump(clf, open(filename, 'wb'))
 
-#f = [[] for i in range(len(y_test))]
-#
-#for i in range(0, len(y_test)):
-#    f[i] = plt.figure()
-#    plt.plot(y_pred[i,:], color = 'blue', label = 'Predicted trajectory')
-#    plt.plot(y_test[i,:], color = 'red', label = 'Actual trajectory')
-##    plt.plot(Y.mean(0), color = 'black', label = 'Average trajectory of the entire set')
-#    #plt.plot(y_pred[0,:] + std, color = 'yellow', label = 'Standard deviation of the trajectories' )
-#    #plt.plot(y_pred[0,:] - std, color = 'yellow')
-#    plt.title('Prediction of Right Ankle plantar flexion')
-#    plt.legend()
-#    plt.show()
+f = [[] for i in range(len(valid_label))]
+
+# Plot for actual vs predicted hip joint trajectory
+for i in range(0, len(valid_label)):
+    f[i] = plt.figure()
+    plt.plot(y_pred[i,:77], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(valid_label[i,:77], color = 'red', label = 'Actual trajectory')
+    plt.title('Prediction of Right Hip extension')
+    plt.legend()
+    plt.show()
+
+# Plot for actual vs predicted knee joint trajectory    
+for i in range(0, len(valid_label)):
+    f[i] = plt.figure()
+    plt.plot(y_pred[i,77:154], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(valid_label[i,77:154], color = 'red', label = 'Actual trajectory')
+    plt.title('Prediction of Right Knee flexion')
+    plt.legend()
+    plt.show()
+
+# Plot for actual vs predicted ankle joint trajectory
+for i in range(0, len(valid_label)):
+    f[i] = plt.figure()
+    plt.plot(y_pred[i,154:], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(valid_label[i,154:], color = 'red', label = 'Actual trajectory')
+    plt.title('Prediction of Right Ankle plantar flexion')
+    plt.legend()
+    plt.show()
