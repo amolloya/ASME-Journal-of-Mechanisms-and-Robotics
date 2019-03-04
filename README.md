@@ -7,6 +7,7 @@ The following table gives the classification accuracies of the models with diffe
 
 | Method  | LOO CV | 3-fold CV  | 5-fold CV | 7-fold CV | 
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| KNN  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
-| SVM  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
-
+| KNN  | 78.57%  | 71.04%  | 78.55%  | 78.99%  |
+| SVM  | 88.23%  | 83.18%  | 86.55%  | 87.81%  |
+| ANN  | 89.49%  | 83.58%  | 90.16%  | 88.65%  |
+| RF   | 98.47%  | 93.60%  | 92.42%  | 95.79%  |
