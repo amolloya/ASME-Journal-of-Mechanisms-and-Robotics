@@ -29,6 +29,6 @@ Once the gait required for training the individual depending upon their body par
 
 According to the needs of the particular individual and other factors like compactness, ease of use for the patient are considered and the different mechanisms that are obtained previously are filtered and we chose the best 1-dof mechanism that would make the subject train to walk a normal gait trajectory specific to their body parameters and thus aid in gait rehabilitation of the patient. 
 
-![alt text](https://raw.githubusercontent.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.pdf)
+![alt text](https://raw.githubusercontent.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.png)
 
-![alt text](https://raw.github.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.pdf)
+![alt text](https://raw.github.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.png)
