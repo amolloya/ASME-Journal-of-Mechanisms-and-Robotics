@@ -1,6 +1,7 @@
 # Machine Learning Driven Individualized Gait Rehabilitation: Gait Classification, Prediction, and Mechanism Design
 
 End-to-End computational approach for individualized gait rehabilitation using machine learning techniques for gait classification using classification models, gait prediction using regression models, and specialized device design.
+<br/>
 
 ![Complete model](Figures/Complete_model.PNG)
 
@@ -15,7 +16,6 @@ The following table gives the classification accuracies of the models with diffe
 | ANN  | 89.49%  | 83.58%  | 90.16%  | 88.65%  |
 | RF   | 98.47%  | 93.60%  | 92.42%  | 95.79%  |
 
-
 The goal of gait prediction is to be able to predict the gait trajectories for a given individual. In order to be able to do that, we first map the healthy individuals' gaits to their attributes. The input for our models are the age, height, weight, gender, thigh length, shank length, and eight other lower leg parameters and the output are their corresponding lower limb joint angle trajectories of hip, knee, and ankle over a gait cycle. Polynomial, Artificial Neural Network, and Lasso regression models are used to train the model for multivariate time series prediction of the joint angles. The standard Root Mean Square Error (RMSE) is used as the performance evaluation parameter for the regression models. Again, Leave one out and k-fold cross-validation methods is used to find out the performance of the regression models.
 
 The following table gives the Root Mean Square Error (RMSE) of the regression models with different cross-validations:
@@ -25,16 +25,16 @@ The following table gives the Root Mean Square Error (RMSE) of the regression mo
 | Polynomial  | 12.09  | 12.88  |  13.42  | 13.81  |
 | ANN  |  9.27  |  8.13  | 9.52  |  9.78  |
 | Lasso  | 7.008 |  7.43  |  7.44  |  7.40  |
-
+<br/>
 Comparison of the predicted and the actual angle trajectories for the joints by Polynomial regression:
 ![Poly_regression](Figures/Poly_regression.PNG)
-
+<br/>
 Comparison of the predicted and the actual angle trajectories for the joints by ANN regression:
 ![ANN_regression](Figures/ANN_regression.PNG)
-
+<br/>
 Comparison of the predicted and the actual angle trajectories for the joints by Lasso-regression:
 ![Lasso_regression](Figures/Lasso_regression.PNG)
-
+<br/>
 Once the gait required for training the individual depending upon their body paramters is obtained, the design process for different mechanisms for gait rehabilitation is initiated. Deep generative model takes in the input the ankle gait trajectory/coupler curve and outputs different variations of 1-dof mechanisms that would give similar coupler curve as our input trajectory. Conditional-Variational Auto Encoders are used for this problem.
 
 According to the compactness, needs and ease of use for the patient, the different mechanisms that are obtained previously are filtered and we chose the best 1-dof mechanism that would help the subject train to walk a normal gait trajectory specific to their body parameters and thus aid in gait rehabilitation of the patient.
