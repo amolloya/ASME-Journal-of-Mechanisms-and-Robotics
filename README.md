@@ -52,4 +52,4 @@ The figure below shows the final solution concepts of four-bar linkages along wi
 
 The mechanism generated would help the subject train to walk a normal gait trajectory specific to their body parameters and thus aid in gait rehabilitation of the patient.
 
-Thus, we develop an end-to-end individualized gait rehabilitation using Machine Learning which is individual-focused and will help to learn personalized gait for the individual.
+Thus, we develop an end-to-end individualized gait rehabilitation using Machine Learning which is individual-focused and will help in learning personalized gait for the individual.
