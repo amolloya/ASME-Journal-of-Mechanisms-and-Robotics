@@ -9,14 +9,14 @@ N = 108
 imputer = impute.SimpleImputer(missing_values=np.nan, strategy='median')
 
 # Importing body parameters
-x = pd.read_excel('Body parameters.xls', header = None)
+X = pd.read_excel('Body parameters.xls', header = None)
 
 # Fit the imputer function to fill in missing values in the data
-x = imputer.fit_transform(x)
+X = imputer.fit_transform(X)
 
 # Normalizing the data
 scaler = StandardScaler()
-x = scaler.fit_transform(x)
+X = scaler.fit_transform(X)
 
 y = [[[] for i in range(14)] for j in range(77)]
 
