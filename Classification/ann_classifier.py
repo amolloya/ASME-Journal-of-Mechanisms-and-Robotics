@@ -41,5 +41,6 @@ neural_network = KerasClassifier(build_fn=create_network, epochs=500, batch_size
 for i in range(2,11):
     acc = cross_val_score(neural_network, X, Y, cv=i)
     #print('Accuracy of k-folds: ', acc)
+    # Mean Accuracy
     acc1 = sum(acc)/i
-    print('\nAverage accuracy for k-fold: ', acc1)
+    print('\nAccuracy for k-fold: ', acc1)
