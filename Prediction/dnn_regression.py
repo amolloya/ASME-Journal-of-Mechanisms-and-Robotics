@@ -1,4 +1,4 @@
-from data_preprocessing import X, Y
+from import_data_and_preprocessing import X, Y
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
