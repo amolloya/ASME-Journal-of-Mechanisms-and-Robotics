@@ -79,7 +79,7 @@ X = pd.DataFrame(X)
 # Normalize the input data with L-2 norm
 X = normalize(X, norm='l2', axis = 1)
 
-# Fitting PCA to the input data
+# Fitting PCA to the input data and choosing top 8 PCs
 pca = PCA(n_components= 8)
 X = pca.fit_transform(X)
 var = pca.explained_variance_ratio_
