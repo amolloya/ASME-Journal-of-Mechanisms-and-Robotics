@@ -14,6 +14,7 @@ for train_index, test_index in loo.split(X):
     
     # Fitting the K-Neighbors Classifier to the data with 3 neighbors
     classifier = KNeighborsClassifier(n_neighbors=3)
+    
     classifier = classifier.fit(X_train, y_train)
     predicted_y = classifier.predict(X_test)
     acc = classifier.score(X_test,y_test)
@@ -36,6 +37,7 @@ for k in (range(2,11)):
         
         # Fitting the K-Neighbors Classifier to the data with 3 neighbors
         classifier = KNeighborsClassifier(n_neighbors=3)
+        
         classifier = classifier.fit(X_train, y_train)
         predicted_y = classifier.predict(X_test)
         acc = classifier.score(X_test,y_test)
