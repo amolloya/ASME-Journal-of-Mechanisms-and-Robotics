@@ -11,7 +11,7 @@ for train_index, test_index in loo.split(X):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = Y[train_index], Y[test_index]
     
-    
+    # Fitting the Random Forest Classifier to the data
     classifier = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=1)  
     
     classifier = classifier.fit(X_train, y_train)
@@ -35,7 +35,7 @@ for k in (range(2,8)):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = Y[train_index], Y[test_index]
         
-        # 
+        # Fitting the Random Forest Classifier to the data
         classifier = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=1)
     
         classifier = classifier.fit(X_train, y_train)
