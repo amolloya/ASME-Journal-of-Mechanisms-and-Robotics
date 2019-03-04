@@ -45,9 +45,11 @@ According to the compactness, needs and ease of use for the patient, the differe
 Following are the feasible solution concepts of mechanisms:
 ![Sixbar_solutions](Figures/Sixbar_solutions.PNG)
 
-Along with Six-bars, C-VAE model was also used to find out the suitable four-bar linkages.
+Along with six-bars, C-VAE model was also used to find out the suitable four-bar linkages.
 
 The figure below shows the final solution concepts of four-bar linkages along with an additional 2R link which resembles the thigh and lower leg of the person.
 ![Fourbar_solutions](Figures/Fourbar_solutions.PNG)
 
 The mechanism generated would help the subject train to walk a normal gait trajectory specific to their body parameters and thus aid in gait rehabilitation of the patient.
+
+Thus, we develop an end-to-end individualized gait rehabilitation using Machine Learning which is individual-focused and will help to learn personalized gait for the individual.
