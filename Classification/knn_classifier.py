@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 # Cross-validation with Leave one out
 loo = LeaveOneOut()
 acc1 = 0
-square_error_sum = 0.0
 
 # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
 for train_index, test_index in loo.split(X):
@@ -29,6 +28,7 @@ print('\n')
 for k in (range(2,11)):
     kfold = KFold(k, True, 1)
     acc1 = 0
+    
     # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
     for train_index, test_index in kfold.split(X):
         X_train, X_test = X[train_index], X[test_index]
