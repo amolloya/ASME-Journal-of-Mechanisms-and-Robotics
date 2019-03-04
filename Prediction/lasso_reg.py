@@ -5,26 +5,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold, LeaveOneOut
 import pickle
+from sklearn.utils import shuffle
 
+# Slicing the hip, knee and ankle joint trajectories
 Y1 = Y[:,:,5]
 Y2 = Y[:,:,7]
 Y3 = Y[:,:,8]
 Y = np.row_stack((Y1,Y2,Y3))
 Y = Y.T
 
-from sklearn.utils import shuffle
+# Shuffling the data randomly
 X, Y = shuffle(X, Y, random_state=0)
 
-# Leave one out Cross-validation
+# Cross-validation with Leave one out
 loo = LeaveOneOut()
 err = 0
 
-# 
+# Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
 for train_index, test_index in loo.split(X):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = Y[train_index], Y[test_index]
         
-        # 
+        # Fitting the Lasso regression model to the data
         clf = linear_model.Lasso(alpha=5.0)
         clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)
@@ -33,23 +35,25 @@ for train_index, test_index in loo.split(X):
         rms = np.sqrt(mean_sq_error)
         err = err + rms
 
-# Mean error
+# Mean RMSE
 err = err/X.shape[0]
 print('RMSE of the model wiht Loo:', err)
 
-# Save the model
+# Saving the model
 filename = 'lasso_reg_loo.sav'
 pickle.dump(clf, open(filename, 'wb'))
 
-# K-fold Cross-validation
+# Cross-validation with k-fold
 for k in (range(2,8)):
     kfold = KFold(k, True, 1)   
     err = 0
-
+        
+    # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
     for train_index, test_index in kfold.split(X):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = Y[train_index], Y[test_index]
         
+        # Fitting the Lasso regression model to the data
         clf = linear_model.Lasso(alpha=5.0)
         clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)
@@ -58,10 +62,11 @@ for k in (range(2,8)):
         rms = np.sqrt(mean_sq_error)        
         err = err + rms
 
-    # Mean error
+    # Mean RMSE
     err = err/k
     print(k,'-fold CV RMSE of the model:', err)
 
+# Saving the model
 filename = 'lasso_reg_kfold.sav'
 pickle.dump(clf, open(filename, 'wb'))
 
