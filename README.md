@@ -26,6 +26,14 @@ The following table gives the Root Mean Square Error (RMSE) of the regression mo
 | ANN  |  9.27  |  8.13  | 9.52  |  9.78  |
 | Lasso  | 7.008 |  7.43  |  7.44  |  7.40  |
 
+Comparison of the predicted and the actual angle trajectories for the joints by Polynomial regression:
+![Poly_regression](Figures/Poly_regression.PNG)
+
+Comparison of the predicted and the actual angle trajectories for the joints by ANN regression:
+![ANN_regression](Figures/ANN_regression.PNG)
+
+Comparison of the predicted and the actual angle trajectories for the joints by Lasso-regression:
+![Lasso_regression](Figures/Lasso_regression.PNG)
 
 Once the gait required for training the individual depending upon their body paramters is obtained, the design process for different mechanisms for gait rehabilitation is initiated. Deep generative model takes in the input the ankle gait trajectory/coupler curve and outputs different variations of 1-dof mechanisms that would give similar coupler curve as our input trajectory. Conditional-Variational Auto Encoders are used for this problem.
 
