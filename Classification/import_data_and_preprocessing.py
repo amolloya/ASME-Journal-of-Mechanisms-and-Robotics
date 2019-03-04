@@ -31,8 +31,7 @@ for ind in range(0,len(x1)):
     if x1[ind,index] == 'M':
         x1[ind,index] = 0
     else:
-        x1[ind,index] = 1
-        
+        x1[ind,index] = 1       
 x1 = pd.DataFrame(x1)
 
 x2 = pd.read_excel('Dataset/HSP_anthropometric.xlsx')
@@ -44,35 +43,29 @@ for ind in range(0,len(x2)):
     if x2[ind,index] == 'M':
         x2[ind,index] = 0
     else:
-        x2[ind,index] = 1
-        
+        x2[ind,index] = 1       
 x2 = pd.DataFrame(x2)
 
 x3 = pd.read_excel('Dataset/PD_anthropometric.xlsx')
 x3 = x3.drop(columns = ['Subject-ID','Disease duration (years)', 'UPDRS III', 'Diagnosis'])
 x3 = x3.values
 
-index = 0
 for ind in range(0,len(x3)):
     if x3[ind,index] == 'M':
         x3[ind,index] = 0
     else:
-        x3[ind,index] = 1
-        
+        x3[ind,index] = 1      
 x3 = pd.DataFrame(x3)
 
 x4 = pd.read_excel('Dataset/HC_anthropometric.xlsx')
 x4 = x4.drop(columns = ['Subject-ID'])
 x4 = x4.values
-#x4 = x4[:30,:]
 
-index = 0
 for ind in range(0,len(x4)):
     if x4[ind,index] == 'M':
         x4[ind,index] = 0
     else:
-        x4[ind,index] = 1
-        
+        x4[ind,index] = 1     
 x4 = pd.DataFrame(x4)
 
 # Taking care of class imbalance problem by resampling the minimum frequency of classes
@@ -96,5 +89,5 @@ print('Total variance covered by PCs', tot_var)
 # Creating labels for the classes
 Y = np.concatenate((np.zeros(57),np.ones(52),2*np.ones(64),3*np.ones(65)))
 
-# Shuffling the data
+# Shuffling the data randomly
 X, Y = shuffle(X, Y, random_state=0)
