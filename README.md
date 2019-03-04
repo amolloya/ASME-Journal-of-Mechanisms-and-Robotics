@@ -31,4 +31,4 @@ According to the needs of the particular individual and other factors like compa
 
 ![alt text](https://raw.githubusercontent.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.pdf)
 
-![alt text](https://github.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.pdf)
+![alt text](https://raw.github.com/amolloya/ASME-Journal-of-Mechanisms-and-Robotics/tree/master/Figures/Complete_model.pdf)
