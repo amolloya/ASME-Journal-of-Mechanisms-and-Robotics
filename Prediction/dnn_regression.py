@@ -62,8 +62,9 @@ plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper right')
 plt.show()
 
-f,z = [[] for i in range(len(valid_label))], [[] for i in range(len(valid_label))]
+f = [[] for i in range(len(valid_label))]
 
+# Plot for actual vs predicted hip joint trajectory
 for i in range(0, len(valid_label)):
     f[i] = plt.figure()
     plt.plot(y_pred[i,:77], color = 'blue', label = 'Predicted trajectory')
@@ -72,6 +73,7 @@ for i in range(0, len(valid_label)):
     plt.legend()
     plt.show()
 
+# Plot for actual vs predicted knee joint trajectory    
 for i in range(0, len(valid_label)):
     f[i] = plt.figure()
     plt.plot(y_pred[i,77:154], color = 'blue', label = 'Predicted trajectory')
@@ -79,7 +81,8 @@ for i in range(0, len(valid_label)):
     plt.title('Prediction of Right Knee flexion')
     plt.legend()
     plt.show()
-    
+
+# Plot for actual vs predicted ankle joint trajectory
 for i in range(0, len(valid_label)):
     f[i] = plt.figure()
     plt.plot(y_pred[i,154:], color = 'blue', label = 'Predicted trajectory')
