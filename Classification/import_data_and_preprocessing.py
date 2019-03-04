@@ -5,23 +5,23 @@ from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 
 # Importing gait parameters of 4 groups
-x1 = pd.read_excel('CA.xlsx')
+x1 = pd.read_excel('Dataset/CA.xlsx')
 x1 = x1.iloc[:,1:]
 
-x2 = pd.read_excel('HSP.xlsx')
+x2 = pd.read_excel('Dataset/HSP.xlsx')
 x2 = x2.iloc[:,1:]
 
-x3 = pd.read_excel('PD.xlsx')
+x3 = pd.read_excel('Dataset/PD.xlsx')
 x3 = x3.iloc[:,1:]
 
-x4 = pd.read_excel('HC.xlsx')
+x4 = pd.read_excel('Dataset/HC.xlsx')
 x4 = x4.iloc[:,1:]
 
 # Taking care of class imbalance problem by resampling the minimum frequency of classes
 X1 = np.concatenate((x1,x1,x1,x2,x2,x3,x3,x4))
 
 # Importing body parameters of 4 groups
-x1 = pd.read_excel('CA_anthropometric.xlsx')
+x1 = pd.read_excel('Dataset/CA_anthropometric.xlsx')
 x1 = x1.drop(columns = ['Subject-ID', 'Disease duration (years)', 'SARA-total', 'Diagnosis'])
 x1 = x1.values
 
@@ -35,7 +35,7 @@ for ind in range(0,len(x1)):
         
 x1 = pd.DataFrame(x1)
 
-x2 = pd.read_excel('HSP_anthropometric.xlsx')
+x2 = pd.read_excel('Dataset/HSP_anthropometric.xlsx')
 x2 = x2.drop(columns = ['Subject-ID','Disease duration (years)', 'SPRS total', 'Diagnosis'])
 x2 = x2.values
 
@@ -48,7 +48,7 @@ for ind in range(0,len(x2)):
         
 x2 = pd.DataFrame(x2)
 
-x3 = pd.read_excel('PD_anthropometric.xlsx')
+x3 = pd.read_excel('Dataset/PD_anthropometric.xlsx')
 x3 = x3.drop(columns = ['Subject-ID','Disease duration (years)', 'UPDRS III', 'Diagnosis'])
 x3 = x3.values
 
@@ -61,7 +61,7 @@ for ind in range(0,len(x3)):
         
 x3 = pd.DataFrame(x3)
 
-x4 = pd.read_excel('HC_anthropometric.xlsx')
+x4 = pd.read_excel('Dataset/HC_anthropometric.xlsx')
 x4 = x4.drop(columns = ['Subject-ID'])
 x4 = x4.values
 #x4 = x4[:30,:]
