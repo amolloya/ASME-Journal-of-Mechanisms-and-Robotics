@@ -22,6 +22,6 @@ The following table gives the Root Mean Square Error (RMSE) of the regression mo
 
 | Method  | LOO CV | 3-fold CV  | 5-fold CV | 7-fold CV |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Polynomial  |  12.09  | 12.88  | 13.42  | 13.81  |
-| ANN  |  9.27  |  8.13  |  9.52  |  9.78  |
+| Polynomial  | 12.09  | 12.88  |  13.42  | 13.81  |
+| ANN  |  9.27  |  8.13  | 9.52  |  9.78  |
 | Lasso  | 7.008 |  7.43  |  7.44  |  7.40  |
