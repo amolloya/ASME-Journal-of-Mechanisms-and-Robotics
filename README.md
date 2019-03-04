@@ -2,7 +2,7 @@
 
 End-to-End computational approach for individualized gait rehabilitation using machine learning techniques for gait classification using classification models, gait prediction using regression models, and specialized device design.
 
-The initial component of our End-to-End approach is the Gait Classifier Module, which analyzes the current gait of the individual on which various further actions are dependent. Gait classification is carried out using K-nearest neighbors, Support Vector Machines, Artificial Neural Network, and Random Forests to classify the gaits into healthy, Cerebellar Ataxia (CA), Hereditary Spastic Paraparesis (HSP), and Parkinson’s disease (PD). Leave one out and k-fold cross-validation methods are used to find out the performance of the models.
+The initial component of our End-to-End approach is the Gait Classifier Module, which analyzes the current gait of the individual on which various further actions are dependent. The inputs to the gait classifier are 22 gait parameters of an individual and the output is corresponding label of gait type. Their are a total of 238 samples with gait parameters and gait label. Gait classification is carried out using K-nearest neighbors, Support Vector Machines, Artificial Neural Network, and Random Forests to classify the gaits into healthy, Cerebellar Ataxia (CA), Hereditary Spastic Paraparesis (HSP), and Parkinson’s disease (PD). Leave one out and k-fold cross-validation methods is used to find out the performance of the classification models.
 
 The following table gives the classification accuracies of the models with different cross-validations:
 
@@ -13,10 +13,7 @@ The following table gives the classification accuracies of the models with diffe
 | ANN  | 89.49%  | 83.58%  | 90.16%  | 88.65%  |
 | RF   | 98.47%  | 93.60%  | 92.42%  | 95.79%  |
 
-
-
-
-
+The goal of gait prediction is to be able to predict the gait trajectories for a given individual. In order to be able to do that, we first map the healthy individuals' gaits to their attributes. The input for our models are the age, height, weight, gender, thigh length, shank length, and eight other lower leg parameters and the output are their corresponding lower limb joint angle trajectories of hip, knee, and ankle over a gait cycle. Polynomial, Artificial Neural Network, and Lasso regression models are used to train the model for multivariate time series prediction of the joint angles. The standard Root Mean Square Error (RMSE) is used as the performance evaluation parameter for the regression models. Again, Leave one out and k-fold cross-validation methods is used to find out the performance of the regression models.
 
 The following table gives the Root Mean Square Error (RMSE) of the regression models with different cross-validations:
 
