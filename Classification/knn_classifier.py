@@ -1,48 +1,53 @@
 from import_data_and_preprocessing import X,Y
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import LeaveOneOut, KFold
-import matplotlib.pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
+import pickle
 
-# Cross-validation with Leave one out
-loo = LeaveOneOut()
-acc1 = 0
+print('\nGait Classification using K-nearest neighbors classifier:\n')
 
-# Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-for train_index, test_index in loo.split(X):
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = Y[train_index], Y[test_index]
-    
-    # Fitting the K-Neighbors Classifier to the data with 3 neighbors
-    classifier = KNeighborsClassifier(n_neighbors=3)
-    
-    classifier = classifier.fit(X_train, y_train)
-    predicted_y = classifier.predict(X_test)
-    acc = classifier.score(X_test,y_test)
-    acc1 = acc + acc1
-    
-# Mean accuracy
-acc1 = acc1/X.shape[0]
-print('Accuracy of the model with LOO:', acc1)
-print('\n')
+# Train-test split
+x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 
-# K-Fold Cross-validation
-for k in (range(2,11)):
-    kfold = KFold(k, True, 1)
-    acc1 = 0
-    
-    # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-    for train_index, test_index in kfold.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        
-        # Fitting the K-Neighbors Classifier to the data with 3 neighbors
-        classifier = KNeighborsClassifier(n_neighbors=3)
-        
-        classifier = classifier.fit(X_train, y_train)
-        predicted_y = classifier.predict(X_test)
-        acc = classifier.score(X_test,y_test)
-        acc1 = acc + acc1
-        
-    # Mean accuracy
-    acc1 = acc1/k
-    print(k,'-fold CV Accuracy of the model:', acc1)
+# Grid-search over the following parameters
+grid_param = {'n_neighbors': [2,3,4,5,6,7,8,9,10],
+              'metric': ['euclidean', 'manhattan', 'minkowski','chebyshev'],
+              'weights': ['uniform', 'distance']}
+
+print('Searching for the best parameters...')
+
+# Define classifier
+classifier = KNeighborsClassifier() 
+
+# Grid search wrapper with 10-fold CV for finding the best parameters
+gd_sr = GridSearchCV(estimator=classifier, param_grid=grid_param, scoring='accuracy', cv=10, verbose=3, n_jobs=-1)
+
+# Fitting the train data to the function
+grid_result = gd_sr.fit(x, y)
+  
+# Mean and std of the CV results for each parameters set
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+for mean, std, params in zip(means, stds, grid_result.cv_results_['params']):
+    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+
+# Best parameters on the CV set
+best_parameters = grid_result.best_params_  
+print('\nBest parameter selection by grid-search:\n', best_parameters)
+
+# Accuracy of best parameter on CV set
+best_result = grid_result.best_score_
+print('\nCross-validation accuracy obtained by best parameters: ', round(best_result,4)) 
+
+# Predicting the classes on test set with the best-parameter model
+pred = grid_result.predict(x_t)
+res = grid_result.score(x_t,y_t)
+print('\nClassification accuracy on test set: ', round(res,4))
+print('')
+
+print(classification_report(y_t, pred))
+
+# Saving the model
+filename = 'knn_classifier.sav'
+pickle.dump(grid_result, open(filename, 'wb'))
