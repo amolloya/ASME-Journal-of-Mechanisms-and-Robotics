@@ -28,7 +28,7 @@ regressor = make_pipeline(PolynomialFeatures(), LinearRegression())
 poly_grid = GridSearchCV(estimator=regressor, param_grid=grid_param, cv=10, 
                          scoring='neg_mean_squared_error', verbose=3, n_jobs=-1)
 
-# Fitting the data to the function
+# Fitting the train data to the function
 grid_result = poly_grid.fit(x, y)
 
 # Mean and std of the CV results for each parameters set
