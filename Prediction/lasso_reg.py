@@ -1,7 +1,6 @@
 import numpy as np
 from import_data_and_data_preprocessing import X,Y
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error, make_scorer
@@ -16,7 +15,7 @@ x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 # Grid-search over these parameters
 grid_param = {'alpha': [0.0001,0.05,0.01,0.1,0.5,1,5,10,100]}
 
-# Define classifier
+# Define regressor
 regressor = Lasso(random_state=0)
 
 #print(regressor.get_params().keys())
@@ -53,8 +52,6 @@ pred = grid_result.predict(x_t)
 res = grid_result.score(x_t,y_t)
 print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
 print('')
-
-print(classification_report(y_t, pred))
 
 # Saving the model
 filename = 'lasso_regression.sav'
