@@ -1,8 +1,7 @@
 from import_data_and_preprocessing import X,Y
 from sklearn.neighbors import KNeighborsClassifier 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
-from sklearn.model_selection import GridSearchCV
 import pickle
 
 print('\nGait Classification using K-nearest neighbors classifier:\n')
