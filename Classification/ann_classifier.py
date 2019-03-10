@@ -23,7 +23,7 @@ print('Searching for the best parameters...\n')
 # Define classifier
 classifier = MLPClassifier(random_state=0)
 
-# Grid search wrapper
+# Grid search wrapper with 10-fold CV for finding the best parameters
 gd_sr = GridSearchCV(estimator=classifier, param_grid=param_grid, scoring='accuracy', cv=10, verbose=3, n_jobs=-1)
 
 # Fitting the data to the function
