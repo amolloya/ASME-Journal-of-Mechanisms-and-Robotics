@@ -1,86 +1,65 @@
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn import linear_model
-from import_data_and_preprocessing import X, Y
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 import numpy as np
+from data_preprocessing import X,Y
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
-from sklearn.model_selection import KFold, LeaveOneOut
-from sklearn.utils import shuffle
 import pickle
 
-# Slicing the hip, knee and ankle joint trajectories
-Y1 = Y[:,:,5]
-Y2 = Y[:,:,7]
-Y3 = Y[:,:,8]
-Y = np.row_stack((Y1,Y2,Y3))
-Y = Y.T
+print('\nGait Prediction using Polynomial Regressor:\n')
 
-# Shuffling the data randomly
-X, Y = shuffle(X, Y, random_state=0)
+# Train-test split
+x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 
-# Cross-validation with Leave one out
-loo = LeaveOneOut()
-err = 0
+# Grid-search over following parameters
+grid_param = {'polynomialfeatures__degree': [2,3,4,5,6]}
+              
+print('Searching for the best parameters...\n')
 
-# Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-for train_index, test_index in loo.split(X):
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = Y[train_index], Y[test_index]
-    
-    # Making the features into polynomial features of degree 3
-    poly = PolynomialFeatures(degree=3)
-    train_X_ = poly.fit_transform(X_train)
-    valid_X_ = poly.fit_transform(X_test)
-    
-    # Fitting the Polynomial regression model to the data
-    clf = linear_model.LinearRegression()
-    clf.fit(train_X_, y_train)
-    y_pred = clf.predict(valid_X_)
-        
-    mean_sq_error = mean_squared_error(y_test, y_pred) 
-    rms = np.sqrt(mean_sq_error)
-    err = err + rms
+# Define regressor
+regressor = make_pipeline(PolynomialFeatures(), LinearRegression())
 
-# Mean RMSE
-err = err/X.shape[0]
-print('RMSE of the model wiht Loo:', err)
+#print(regressor.get_params().keys())
 
-# Saving the model
-filename = 'poly_reg_loo.sav'
-pickle.dump(clf, open(filename, 'wb'))
+# Grid search wrapper
+poly_grid = GridSearchCV(estimator=regressor, param_grid=grid_param, cv=10, 
+                         scoring='neg_mean_squared_error', verbose=3, n_jobs=-1)
 
-# Cross-validation with k-fold
-for k in (range(2,8)):
-    kfold = KFold(k, True, 1)
-    err = 0
-    
-    # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-    for train_index, test_index in kfold.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        
-        # Making the features into polynomial features of degree 3
-        poly = PolynomialFeatures(degree=3)
-        train_X_ = poly.fit_transform(X_train)
-        valid_X_ = poly.fit_transform(X_test)
-        
-        # Fitting the Polynomial regression model to the data
-        clf = linear_model.LinearRegression()
-        clf.fit(train_X_, y_train)
-        y_pred = clf.predict(valid_X_)
-        
-        mean_sq_error = mean_squared_error(y_test, y_pred)
-        rms = np.sqrt(mean_sq_error)
-        err = err + rms
-    
-    # Mean RMSE
-    err = err/k
-    print(k,'-fold CV RMSE of the model:', err)
+# Fitting the data to the function
+grid_result = poly_grid.fit(x, y)
 
-# Saving the model
-filename = 'poly_reg_kfold.sav'
-pickle.dump(clf, open(filename, 'wb'))
+# Mean and std of the CV results for each parameters set
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+means = np.sqrt(-means)
+stds = np.sqrt(stds)
+
+print('\nRMS error for different parameter set:\n')
+for mean, std, params in zip(means, stds, grid_result.cv_results_['params']):
+    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+
+# Best parameters on the CV set
+best_parameters = grid_result.best_params_
+print('\nBest parameter selection by grid-search:\n', best_parameters)
+
+# RMSE of best parameter on CV set
+best_result = grid_result.best_score_
+print('\nCross-validation RMS error obtained by best parameters: ', round(np.sqrt(-best_result),4)) 
+
+# Predicting the trajectories and RMSE on test set with the best-parameter model
+pred = grid_result.predict(x_t)
+res = grid_result.score(x_t,y_t)
+print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
+print('')
+
+print(classification_report(y_t, pred))
+
+# Saving the file
+filename = 'poly_regression.sav'
+pickle.dump(grid_result, open(filename, 'wb'))
 
 f = [[] for i in range(len(valid_label))]
 
