@@ -60,7 +60,7 @@ print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
 print('')
 
 # Saving the file
-filename = 'dnn_regression.sav'
+filename = 'ann_regression.sav'
 pickle.dump(grid_result, open(filename, 'wb'))
 
 f = [[] for i in range(len(y_t))]
