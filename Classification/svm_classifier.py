@@ -1,8 +1,7 @@
 from import_data_and_preprocessing import X,Y
 from sklearn import svm
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import classification_report 
 import pickle
 
 print('\nGait Classification using Spport Vector Machines classifier:\n')
@@ -21,7 +20,7 @@ print('Searching for the best parameters...')
 # Define classifier
 classifier = svm.SVC(random_state=0)
 
-# Grid search wrapper
+# Grid search wrapper with 10-fold CV for finding the best parameters
 gd_sr = GridSearchCV(estimator=classifier, param_grid=grid_param, scoring='accuracy', cv=10, verbose=3, n_jobs=-1)
 
 # Fitting the data to the function
