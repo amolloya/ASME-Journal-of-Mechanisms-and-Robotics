@@ -33,7 +33,7 @@ for i in range(1,109):
 
 Y = [[[] for i in range(108)] for j in range(77)]
 
-# Rearranging the joint angle trajectories of same joint together
+# Stacking the joint angle trajectories of same joint together
 for M in range(14):
     yz =  [[] for i in range(77)]
     for i in range(N):
@@ -48,4 +48,5 @@ Y3 = Y[:,:,8]
 Y = np.row_stack((Y1,Y2,Y3))
 Y = Y.T
 
+# Shuffling the data
 X, Y = shuffle(X, Y, random_state=0)
