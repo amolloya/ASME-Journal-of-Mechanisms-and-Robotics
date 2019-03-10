@@ -59,7 +59,7 @@ res = grid_result.score(x_t,y_t)
 print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
 print('')
 
-# Saving the file
+# Saving the model
 filename = 'ann_regression.sav'
 pickle.dump(grid_result, open(filename, 'wb'))
 
