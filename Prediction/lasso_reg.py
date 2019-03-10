@@ -1,5 +1,5 @@
 import numpy as np
-from data_preprocessing import X,Y
+from import_data_and_data_preprocessing import X,Y
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, cross_val_score
@@ -23,7 +23,7 @@ regressor = Lasso(random_state=0)
 
 print('Searching for the best parameters...\n')
 
-# Grid search wrapper
+# Grid search wrapper with 10-fold CV for finding the best parameters
 lasso_grid = GridSearchCV(estimator=regressor, param_grid=grid_param, cv=10, 
                          scoring= 'neg_mean_squared_error', verbose=3, n_jobs=-1)
 
@@ -60,31 +60,32 @@ print(classification_report(y_t, pred))
 filename = 'lasso_regression.sav'
 pickle.dump(grid_result, open(filename, 'wb'))
 
-f = [[] for i in range(len(valid_label))]
+f = [[] for i in range(len(y_t))]
 
 # Plot for actual vs predicted hip joint trajectory
-for i in range(0, len(valid_label)):
+for i in range(0, len(y_t)):
     f[i] = plt.figure()
-    plt.plot(y_pred[i,:77], color = 'blue', label = 'Predicted trajectory')
-    plt.plot(valid_label[i,:77], color = 'red', label = 'Actual trajectory')
+    plt.plot(pred[i,:77], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(y_t[i,:77], color = 'red', label = 'Actual trajectory')
     plt.title('Prediction of Right Hip extension')
     plt.legend()
     plt.show()
 
 # Plot for actual vs predicted knee joint trajectory    
-for i in range(0, len(valid_label)):
+for i in range(0, len(y_t)):
     f[i] = plt.figure()
-    plt.plot(y_pred[i,77:154], color = 'blue', label = 'Predicted trajectory')
-    plt.plot(valid_label[i,77:154], color = 'red', label = 'Actual trajectory')
+    plt.plot(pred[i,77:154], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(y_t[i,77:154], color = 'red', label = 'Actual trajectory')
     plt.title('Prediction of Right Knee flexion')
     plt.legend()
     plt.show()
 
 # Plot for actual vs predicted ankle joint trajectory
-for i in range(0, len(valid_label)):
+for i in range(0, len(y_t)):
     f[i] = plt.figure()
-    plt.plot(y_pred[i,154:], color = 'blue', label = 'Predicted trajectory')
-    plt.plot(valid_label[i,154:], color = 'red', label = 'Actual trajectory')
+    plt.plot(pred[i,154:], color = 'blue', label = 'Predicted trajectory')
+    plt.plot(y_t[i,154:], color = 'red', label = 'Actual trajectory')
     plt.title('Prediction of Right Ankle plantar flexion')
     plt.legend()
     plt.show()
+    
