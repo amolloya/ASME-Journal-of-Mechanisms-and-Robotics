@@ -1,7 +1,6 @@
 import numpy as np
 from import_data_and_preprocessing import X,Y
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_squared_error, make_scorer
@@ -23,7 +22,7 @@ hidden_layer_sizes = [(100,),(200,),(300,)]
      
 grid_param = dict(max_iter=max_iter, activation=activation, batch_size=batch_size, solver=solver, learning_rate=learning_rate, hidden_layer_sizes=hidden_layer_sizes)
 
-# Define classifier
+# Define regressor
 regressor = MLPRegressor(random_state=0)
 
 #print(regressor.get_params().keys())
@@ -59,7 +58,6 @@ pred = grid_result.predict(x_t)
 res = grid_result.score(x_t,y_t)
 print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
 print('')
-#print(classification_report(y_t, pred))
 
 # Saving the file
 filename = 'dnn_regression.sav'
