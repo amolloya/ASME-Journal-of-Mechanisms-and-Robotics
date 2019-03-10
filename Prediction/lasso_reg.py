@@ -1,74 +1,64 @@
-from sklearn import linear_model
-from import_data_and_preprocessing import X, Y
-from sklearn.metrics import mean_squared_error
 import numpy as np
+from data_preprocessing import X,Y
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV, cross_val_score
+from sklearn.linear_model import Lasso
+from sklearn.metrics import mean_squared_error, make_scorer
 import matplotlib.pyplot as plt
-from sklearn.model_selection import KFold, LeaveOneOut
 import pickle
-from sklearn.utils import shuffle
 
-# Slicing the hip, knee and ankle joint trajectories
-Y1 = Y[:,:,5]
-Y2 = Y[:,:,7]
-Y3 = Y[:,:,8]
-Y = np.row_stack((Y1,Y2,Y3))
-Y = Y.T
+print('\nGait Prediction using Lasso Regressor:\n')
 
-# Shuffling the data randomly
-X, Y = shuffle(X, Y, random_state=0)
+# Train-test split
+x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 
-# Cross-validation with Leave one out
-loo = LeaveOneOut()
-err = 0
+# Grid-search over these parameters
+grid_param = {'alpha': [0.0001,0.05,0.01,0.1,0.5,1,5,10,100]}
 
-# Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-for train_index, test_index in loo.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        
-        # Fitting the Lasso regression model to the data
-        clf = linear_model.Lasso(alpha=5.0)
-        clf.fit(X_train, y_train)
-        y_pred = clf.predict(X_test)
-        
-        mean_sq_error = mean_squared_error(y_test, y_pred)
-        rms = np.sqrt(mean_sq_error)
-        err = err + rms
+# Define classifier
+regressor = Lasso(random_state=0)
 
-# Mean RMSE
-err = err/X.shape[0]
-print('RMSE of the model wiht Loo:', err)
+#print(regressor.get_params().keys())
 
-# Saving the model
-filename = 'lasso_reg_loo.sav'
-pickle.dump(clf, open(filename, 'wb'))
+print('Searching for the best parameters...\n')
 
-# Cross-validation with k-fold
-for k in (range(2,8)):
-    kfold = KFold(k, True, 1)   
-    err = 0
-        
-    # Splitting the data into k-folds ((k-1)-fold for training and 1-fold for testing)
-    for train_index, test_index in kfold.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        
-        # Fitting the Lasso regression model to the data
-        clf = linear_model.Lasso(alpha=5.0)
-        clf.fit(X_train, y_train)
-        y_pred = clf.predict(X_test)
-        
-        mean_sq_error = mean_squared_error(y_test, y_pred)        
-        rms = np.sqrt(mean_sq_error)        
-        err = err + rms
+# Grid search wrapper
+lasso_grid = GridSearchCV(estimator=regressor, param_grid=grid_param, cv=10, 
+                         scoring= 'neg_mean_squared_error', verbose=3, n_jobs=-1)
 
-    # Mean RMSE
-    err = err/k
-    print(k,'-fold CV RMSE of the model:', err)
+# Fitting the data to the function
+grid_result = lasso_grid.fit(x, y)
+
+# Mean and std of the CV results for each parameters set
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+means = np.sqrt(-means)
+stds = np.sqrt(stds)
+
+print('\nRMS error for different parameter set:\n')
+for mean, std, params in zip(means, stds, grid_result.cv_results_['params']):
+    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+
+# Best parameters on the CV set
+best_parameters = grid_result.best_params_
+print('\nBest parameter selection by grid-search:\n', best_parameters)
+
+# RMSE of best parameter on CV set
+best_result = grid_result.best_score_
+print('\nCross-validation RMS error obtained by best parameters: ', round(np.sqrt(-best_result),4)) 
+
+# Predicting the trajectories and RMSE on test set with the best-parameter model
+pred = grid_result.predict(x_t)
+res = grid_result.score(x_t,y_t)
+print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
+print('')
+
+print(classification_report(y_t, pred))
 
 # Saving the model
-filename = 'lasso_reg_kfold.sav'
-pickle.dump(clf, open(filename, 'wb'))
+filename = 'lasso_regression.sav'
+pickle.dump(grid_result, open(filename, 'wb'))
 
 f = [[] for i in range(len(valid_label))]
 
