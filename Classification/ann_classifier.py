@@ -1,6 +1,7 @@
 from import_data_and_preprocessing import X,Y
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report
 import pickle
 
 print('\nGait Classification using Artificial Neural Network classifier:\n')
