@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn import impute
 from sklearn.preprocessing import StandardScaler
+from sklearn.utils import shuffle
 
 N = 108
 
@@ -40,3 +41,11 @@ for M in range(14):
         yz = np.column_stack((yz, yy))
         
     Y = np.dstack((Y,yz))
+
+    Y1 = Y[:,:,5]
+Y2 = Y[:,:,7]
+Y3 = Y[:,:,8]
+Y = np.row_stack((Y1,Y2,Y3))
+Y = Y.T
+
+X, Y = shuffle(X, Y, random_state=0)
