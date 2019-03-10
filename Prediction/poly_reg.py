@@ -16,14 +16,13 @@ x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 
 # Grid-search over following parameters
 grid_param = {'polynomialfeatures__degree': [2,3,4,5,6]}
-              
-print('Searching for the best parameters...\n')
 
 # Define regressor
 regressor = make_pipeline(PolynomialFeatures(), LinearRegression())
 
 #print(regressor.get_params().keys())
 
+print('Searching for the best parameters...\n')
 # Grid search wrapper
 poly_grid = GridSearchCV(estimator=regressor, param_grid=grid_param, cv=10, 
                          scoring='neg_mean_squared_error', verbose=3, n_jobs=-1)
