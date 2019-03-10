@@ -5,7 +5,6 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import make_pipeline
-from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 import pickle
 
@@ -53,8 +52,6 @@ pred = grid_result.predict(x_t)
 res = grid_result.score(x_t,y_t)
 print('\nPrediction RMS error on test set: ', round(np.sqrt(-res),4))
 print('')
-
-print(classification_report(y_t, pred))
 
 # Saving the model
 filename = 'poly_regression.sav'
