@@ -1,46 +1,55 @@
 from import_data_and_preprocessing import X,Y
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-import matplotlib.pyplot as plt
-from numpy.random import seed
-from keras.utils import to_categorical
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
-from keras import optimizers
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.neural_network import MLPClassifier
+import pickle
 
-seed(100)
+print('\nGait Classification using Artificial Neural Network classifier:\n')
 
-Y = to_categorical(Y)
+# Train-test split
+x,x_t,y,y_t = train_test_split(X, Y, test_size = 0.2, random_state=1)
 
-# Creating a network function for ANN
-def create_network():
-    
-    model = Sequential()
-    
-    model.add(Dense(16, activation='relu'))
+# Grid-search over these parameters
+max_iter = [100,250]
+activation = ['logistic', 'tanh', 'relu']
+batch_size = [5,10,20]
+solver = ['lbfgs', 'sgd', 'adam']
+learning_rate = ['constant', 'invscaling', 'adaptive']
+hidden_layer_sizes = [(16,32,16),(8,8,8),(8,16,8),(32,32,32)]
 
-    model.add(Dense(32, activation='relu'))
-    
-    model.add(Dense(16, activation='relu'))
-    
-    model.add(Dropout(0.35))
+param_grid = dict(max_iter=max_iter, activation=activation, hidden_layer_sizes=hidden_layer_sizes, solver=solver, batch_size=batch_size, learning_rate=learning_rate)
 
-    model.add(Dense(4, activation='softmax'))
-    
-    adam = optimizers.Adam(lr=0.0009)
-    
-    model.compile(loss='categorical_crossentropy',metrics=['accuracy'], optimizer=adam)
-    
-    return model
+print('Searching for the best parameters...\n')
 
-# Using KerasClassifier wrapper to wrap the create_network function and hyperparameters
-neural_network = KerasClassifier(build_fn=create_network, epochs=500, batch_size=20, verbose=1)
+# Define classifier
+classifier = MLPClassifier(random_state=0)
 
-# Cross validation accuracy for k-folds
-for i in range(2,11):
-    acc = cross_val_score(neural_network, X, Y, cv=i)
-    #print('Accuracy of k-folds: ', acc)
-    # Mean Accuracy
-    acc1 = sum(acc)/i
-    print('\nAccuracy for k-fold: ', acc1)
+# Grid search wrapper
+gd_sr = GridSearchCV(estimator=classifier, param_grid=param_grid, scoring='accuracy', cv=10, verbose=3, n_jobs=-1)
+
+# Fitting the data to the function
+grid_result = gd_sr.fit(x, y) 
+
+# Mean and std of the CV results for each parameters set
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+for mean, std, params in zip(means, stds, grid_result.cv_results_['params']):
+    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+
+# Best parameters on the CV set
+best_parameters = grid_result.best_params_  
+print('\nBest parameter selection by grid-search:\n', best_parameters)
+
+# Accuracy of best parameter on CV set
+best_result = grid_result.best_score_
+print('\nCross-validation accuracy obtained by best parameters: ', round(best_result,4))  
+
+# Predicting the classes on test set with the best-parameter model
+pred = grid_result.predict(x_t)
+res = grid_result.score(x_t,y_t)
+print('\nClassification accuracy on test set: ', round(res,4))
+
+print(classification_report(y_t, pred))
+
+# Saving the model
+filename = 'ann_classifier.sav'
+pickle.dump(grid_result, open(filename, 'wb'))
