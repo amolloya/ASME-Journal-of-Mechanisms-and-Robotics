@@ -57,7 +57,7 @@ print('')
 
 print(classification_report(y_t, pred))
 
-# Saving the file
+# Saving the model
 filename = 'poly_regression.sav'
 pickle.dump(grid_result, open(filename, 'wb'))
 
