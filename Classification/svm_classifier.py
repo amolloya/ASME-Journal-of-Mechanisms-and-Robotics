@@ -1,7 +1,10 @@
 from import_data_and_preprocessing import X,Y
 from sklearn import svm
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import classification_report 
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
 import pickle
 
 print('\nGait Classification using Spport Vector Machines classifier:\n')
@@ -46,7 +49,19 @@ res = grid_result.score(x_t,y_t)
 print('\nClassification accuracy on test set: ', round(res,4))
 print('')
 
-print(classification_report(y_t, pred))
+# Results
+conf_matrix = confusion_matrix(y_t, pred) 
+print('Confusion Matrix :\n', conf_matrix) 
+print('\nClassification Report : \n', classification_report(y_t, pred)) 
+
+# Heatmap of confusion matrix
+df_cm = pd.DataFrame(conf_matrix, index = ['CA', 'HSP', 'PD', 'HC'],
+                  columns = ['CA', 'HSP', 'PD', 'HC'])
+ax = plt.axes()
+sns.heatmap(df_cm, cmap='BuPu', linewidths = 2, square=False, annot=True)
+ax.set_title('Confusion Matrix for ANN classifier', fontsize=15)
+ax.set_xlabel('Target labels', fontsize=14)
+ax.set_ylabel('Predicted labels', fontsize=14)
 
 # Saving the model
 filename = 'svm_classifier.sav'
